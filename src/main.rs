@@ -41,7 +41,7 @@ async fn handler(Query(params): Query<ProbeParams>) -> Result<String, StatusCode
     let mut output = String::new();
     for (key, value) in power {
         output.push_str(&format!(
-            "shelly_power_usage_watts{{switch_id: {}}} {}\n",
+            "shelly_power_usage_watts{{switch_id=\"{}\"}} {}\n",
             key, value
         ));
     }
