@@ -1,3 +1,20 @@
+// Copyright (C) 2024 Felix Huettner
+//
+// This file is part of shelly-exporter.
+//
+// shelly-exporter is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// shelly-exporter is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 use axum::extract::Query;
 use axum::http::StatusCode;
 use axum::routing::get;
@@ -34,9 +51,9 @@ async fn main() {
 
 //async fn handler(Query(params): Query<ProbeParams>) -> Result<String, Box<dyn std::error::Error>> {
 async fn handler(Query(params): Query<ProbeParams>) -> Result<String, StatusCode> {
-    let power = get_power(&params.target).await.or_else(|e| {
+    let power = get_power(&params.target).await.map_err(|e| {
         println!("Error in handler {:?}", e);
-        Err(StatusCode::INTERNAL_SERVER_ERROR)
+        StatusCode::INTERNAL_SERVER_ERROR
     })?;
     let mut output = String::new();
     for (key, value) in power {
