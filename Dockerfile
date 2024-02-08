@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FROM rust:1.75 as builder
+FROM rust:1.76 as builder
 WORKDIR /usr/src/shelly-exporter
 COPY . .
 RUN cargo install --path .
